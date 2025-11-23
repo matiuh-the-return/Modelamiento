@@ -1,4 +1,21 @@
-import React, { useState } from 'react';
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediControl - Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <div id="root"></div>
+    
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <script type="text/babel">
+       import React, { useState } from 'react';
 import { FileText, Eye, EyeOff, User, Lock, AlertCircle, CheckCircle } from 'lucide-react';
 
 const LoginApp = () => {
@@ -230,3 +247,8 @@ const LoginApp = () => {
 };
 
 export default LoginApp;
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<LoginApp />);
+    </script>
+</body>
+</html>
