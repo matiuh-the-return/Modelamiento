@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MediControl - Login</title>
+    <title>MediControl - Gestión de Dependientes</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
@@ -16,80 +16,94 @@
     <script type="text/babel">
         const { useState } = React;
         
-        // Componentes de iconos simples (ya que lucide-react no funciona bien en CDN)
-        const FileText = () => (
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                <polyline points="14 2 14 8 20 8"/>
-                <line x1="16" y1="13" x2="8" y2="13"/>
-                <line x1="16" y1="17" x2="8" y2="17"/>
-                <polyline points="10 9 9 9 8 9"/>
+        // Iconos SVG
+        const Users = ({ size = 24 }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                <circle cx="9" cy="7" r="4"/>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
             </svg>
         );
 
-        const Eye = () => (
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                <circle cx="12" cy="12" r="3"/>
+        const Plus = ({ size = 20 }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <line x1="12" y1="5" x2="12" y2="19"/>
+                <line x1="5" y1="12" x2="19" y2="12"/>
             </svg>
         );
 
-        const EyeOff = () => (
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
-                <line x1="1" y1="1" x2="23" y2="23"/>
+        const Edit = ({ size = 20 }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
             </svg>
         );
 
-        const User = () => (
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        const Trash = ({ size = 20 }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <polyline points="3 6 5 6 21 6"/>
+                <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                <line x1="10" y1="11" x2="10" y2="17"/>
+                <line x1="14" y1="11" x2="14" y2="17"/>
+            </svg>
+        );
+
+        const X = ({ size = 24 }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <line x1="18" y1="6" x2="6" y2="18"/>
+                <line x1="6" y1="6" x2="18" y2="18"/>
+            </svg>
+        );
+
+        const Calendar = ({ size = 20 }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                <line x1="16" y1="2" x2="16" y2="6"/>
+                <line x1="8" y1="2" x2="8" y2="6"/>
+                <line x1="3" y1="10" x2="21" y2="10"/>
+            </svg>
+        );
+
+        const User = ({ size = 20 }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
                 <circle cx="12" cy="7" r="4"/>
             </svg>
         );
 
-        const Lock = () => (
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-                <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+        const CheckCircle = ({ size = 20 }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                <polyline points="22 4 12 14.01 9 11.01"/>
             </svg>
         );
 
-        const AlertCircle = () => (
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        const AlertCircle = ({ size = 20 }) => (
+            <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <circle cx="12" cy="12" r="10"/>
                 <line x1="12" y1="8" x2="12" y2="12"/>
                 <line x1="12" y1="16" x2="12.01" y2="16"/>
             </svg>
         );
 
-        const CheckCircle = () => (
-            <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-                <polyline points="22 4 12 14.01 9 11.01"/>
-            </svg>
-        );
+        const DependentsApp = () => {
+            const [dependents, setDependents] = useState([
+                { id: 1, name: 'Juan Pérez', rut: '12.345.678-9', birthDate: '2015-05-15', sex: 'M', relation: 'Hijo' },
+                { id: 2, name: 'María Pérez', rut: '23.456.789-0', birthDate: '2018-08-22', sex: 'F', relation: 'Hija' },
+                { id: 3, name: 'Carlos Pérez', rut: '34.567.890-1', birthDate: '1975-03-10', sex: 'M', relation: 'Padre' }
+            ]);
 
-        const LoginApp = () => {
-            const [rut, setRut] = useState('');
-            const [password, setPassword] = useState('');
-            const [userType, setUserType] = useState('independent');
-            const [showPassword, setShowPassword] = useState(false);
-            const [error, setError] = useState('');
-            const [success, setSuccess] = useState('');
-            const [isLoggedIn, setIsLoggedIn] = useState(false);
-            const [currentUser, setCurrentUser] = useState(null);
-
-            const users = {
-                'independent': [
-                    { rut: '12.345.678-9', password: 'matias123', name: 'Matías Pérez', type: 'independent' },
-                    { rut: '98.765.432-1', password: 'ana123', name: 'Ana González', type: 'independent' }
-                ],
-                'dependent': [
-                    { rut: '23.456.789-0', password: 'juan123', name: 'Juan Pérez', type: 'dependent' },
-                    { rut: '34.567.890-1', password: 'maria123', name: 'María Pérez', type: 'dependent' }
-                ]
-            };
+            const [showModal, setShowModal] = useState(false);
+            const [editingDependent, setEditingDependent] = useState(null);
+            const [formData, setFormData] = useState({
+                name: '',
+                rut: '',
+                birthDate: '',
+                sex: 'M',
+                relation: ''
+            });
+            const [notification, setNotification] = useState({ show: false, message: '', type: '' });
 
             const formatRut = (value) => {
                 const cleaned = value.replace(/[^\dkK]/g, '');
@@ -105,201 +119,372 @@
             const handleRutChange = (e) => {
                 const value = e.target.value;
                 if (value.length <= 12) {
-                    setRut(formatRut(value));
+                    setFormData({ ...formData, rut: formatRut(value) });
                 }
             };
 
-            const handleLogin = (e) => {
-                e.preventDefault();
-                setError('');
-                setSuccess('');
+            const showNotification = (message, type) => {
+                setNotification({ show: true, message, type });
+                setTimeout(() => {
+                    setNotification({ show: false, message: '', type: '' });
+                }, 3000);
+            };
 
-                if (!rut || !password) {
-                    setError('Por favor completa todos los campos');
+            const openModal = (dependent = null) => {
+                if (dependent) {
+                    setEditingDependent(dependent);
+                    setFormData(dependent);
+                } else {
+                    setEditingDependent(null);
+                    setFormData({ name: '', rut: '', birthDate: '', sex: 'M', relation: '' });
+                }
+                setShowModal(true);
+            };
+
+            const closeModal = () => {
+                setShowModal(false);
+                setEditingDependent(null);
+                setFormData({ name: '', rut: '', birthDate: '', sex: 'M', relation: '' });
+            };
+
+            const handleSubmit = (e) => {
+                e.preventDefault();
+                
+                if (!formData.name || !formData.rut || !formData.birthDate || !formData.relation) {
+                    showNotification('Por favor completa todos los campos', 'error');
                     return;
                 }
 
-                const userList = users[userType];
-                const user = userList.find(u => u.rut === rut && u.password === password);
-
-                if (user) {
-                    setSuccess(`¡Bienvenido ${user.name}!`);
-                    setCurrentUser(user);
-                    setTimeout(() => {
-                        setIsLoggedIn(true);
-                    }, 1500);
+                if (editingDependent) {
+                    setDependents(dependents.map(dep => 
+                        dep.id === editingDependent.id ? { ...formData, id: dep.id } : dep
+                    ));
+                    showNotification('Dependiente actualizado exitosamente', 'success');
                 } else {
-                    setError('RUT o contraseña incorrectos');
+                    const newDependent = {
+                        ...formData,
+                        id: Date.now()
+                    };
+                    setDependents([...dependents, newDependent]);
+                    showNotification('Dependiente agregado exitosamente', 'success');
+                }
+                
+                closeModal();
+            };
+
+            const handleDelete = (id) => {
+                if (window.confirm('¿Estás seguro de eliminar este dependiente?')) {
+                    setDependents(dependents.filter(dep => dep.id !== id));
+                    showNotification('Dependiente eliminado', 'success');
                 }
             };
 
-            if (isLoggedIn) {
-                return (
-                    <div className="min-h-screen bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center p-6">
-                        <div className="bg-white rounded-3xl shadow-2xl p-8 max-w-md w-full text-center">
-                            <div className="mb-6">
-                                <div className="inline-block bg-green-100 rounded-full p-4 mb-4">
-                                    <CheckCircle />
-                                </div>
-                                <h2 className="text-3xl font-bold text-gray-800 mb-2">¡Sesión Iniciada!</h2>
-                                <p className="text-gray-600 mb-4">Bienvenido, {currentUser.name}</p>
-                                <div className="bg-blue-50 rounded-xl p-4 mb-6">
-                                    <p className="text-sm text-blue-800"><strong>Tipo:</strong> {currentUser.type === 'independent' ? 'Usuario Independiente' : 'Usuario Dependiente'}</p>
-                                    <p className="text-sm text-blue-800"><strong>RUT:</strong> {currentUser.rut}</p>
-                                </div>
-                            </div>
-                            <button
-                                onClick={() => {
-                                    setIsLoggedIn(false);
-                                    setCurrentUser(null);
-                                    setRut('');
-                                    setPassword('');
-                                    setError('');
-                                    setSuccess('');
-                                }}
-                                className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-4 rounded-xl font-semibold shadow-lg hover:shadow-xl transition duration-300"
-                            >
-                                Cerrar Sesión
-                            </button>
-                        </div>
-                    </div>
-                );
-            }
+            const calculateAge = (birthDate) => {
+                const today = new Date();
+                const birth = new Date(birthDate);
+                let age = today.getFullYear() - birth.getFullYear();
+                const monthDiff = today.getMonth() - birth.getMonth();
+                if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birth.getDate())) {
+                    age--;
+                }
+                return age;
+            };
 
             return (
-                <div className="min-h-screen bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center p-6">
-                    <div className="w-full max-w-md">
-                        <div className="text-center mb-8">
-                            <div className="inline-block bg-white rounded-full p-4 mb-4 shadow-lg animate-bounce">
-                                <FileText />
+                <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50">
+                    {/* Header */}
+                    <div className="bg-gradient-to-r from-blue-600 to-purple-600 text-white p-6 shadow-lg">
+                        <div className="max-w-7xl mx-auto">
+                            <div className="flex items-center gap-3 mb-2">
+                                <Users size={32} />
+                                <h1 className="text-3xl font-bold">Gestión de Dependientes</h1>
                             </div>
-                            <h1 className="text-4xl font-bold text-white mb-2">MediControl</h1>
-                            <p className="text-blue-100 text-lg">Tu salud en tus manos</p>
-                        </div>
-
-                        <div className="bg-white rounded-3xl shadow-2xl p-6 space-y-4">
-                            <div className="text-center mb-4">
-                                <h2 className="text-2xl font-bold text-gray-800">Iniciar Sesión</h2>
-                                <p className="text-gray-500 text-sm">Ingresa tus credenciales</p>
-                            </div>
-
-                            {error && (
-                                <div className="bg-red-50 border-2 border-red-200 rounded-xl p-4 flex items-start gap-3">
-                                    <div className="flex-shrink-0 mt-0.5 text-red-600">
-                                        <AlertCircle />
-                                    </div>
-                                    <div>
-                                        <p className="text-red-800 font-semibold text-sm">Error</p>
-                                        <p className="text-red-700 text-sm">{error}</p>
-                                    </div>
-                                </div>
-                            )}
-
-                            {success && (
-                                <div className="bg-green-50 border-2 border-green-200 rounded-xl p-4 flex items-start gap-3">
-                                    <div className="flex-shrink-0 mt-0.5 text-green-600">
-                                        <CheckCircle />
-                                    </div>
-                                    <div>
-                                        <p className="text-green-800 font-semibold text-sm">¡Éxito!</p>
-                                        <p className="text-green-700 text-sm">{success}</p>
-                                    </div>
-                                </div>
-                            )}
-
-                            <div>
-                                <label className="block text-gray-700 font-medium mb-2 text-sm flex items-center gap-1">
-                                    <User />
-                                    RUT
-                                </label>
-                                <input
-                                    type="text"
-                                    value={rut}
-                                    onChange={handleRutChange}
-                                    placeholder="12.345.678-9"
-                                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none transition"
-                                />
-                            </div>
-
-                            <div>
-                                <label className="block text-gray-700 font-medium mb-2 text-sm flex items-center gap-1">
-                                    <Lock />
-                                    Contraseña
-                                </label>
-                                <div className="relative">
-                                    <input
-                                        type={showPassword ? 'text' : 'password'}
-                                        value={password}
-                                        onChange={(e) => setPassword(e.target.value)}
-                                        placeholder="••••••••"
-                                        className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none transition pr-12"
-                                    />
-                                    <button
-                                        type="button"
-                                        onClick={() => setShowPassword(!showPassword)}
-                                        className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                                    >
-                                        {showPassword ? <EyeOff /> : <Eye />}
-                                    </button>
-                                </div>
-                            </div>
-
-                            <div>
-                                <label className="block text-gray-700 font-medium mb-2 text-sm">
-                                    Tipo de Usuario
-                                </label>
-                                <select
-                                    value={userType}
-                                    onChange={(e) => setUserType(e.target.value)}
-                                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none transition"
-                                >
-                                    <option value="independent">Usuario Independiente</option>
-                                    <option value="dependent">Usuario Dependiente</option>
-                                </select>
-                            </div>
-
-                            <button
-                                onClick={handleLogin}
-                                className="w-full bg-gradient-to-r from-blue-600 to-purple-600 text-white py-4 rounded-xl font-semibold shadow-lg hover:shadow-xl transition duration-300 transform hover:scale-105"
-                            >
-                                Iniciar Sesión
-                            </button>
-
-                            <div className="text-center space-y-2 pt-2">
-                                <button className="text-blue-600 text-sm font-medium hover:underline">
-                                    ¿Olvidaste tu contraseña?
-                                </button>
-                                <div>
-                                    <span className="text-gray-600 text-sm">¿No tienes cuenta? </span>
-                                    <button className="text-blue-600 text-sm font-semibold hover:underline">
-                                        Regístrate aquí
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div className="mt-6 bg-white/10 backdrop-blur-sm rounded-2xl p-4 text-white text-sm">
-                            <h3 className="font-bold mb-2 text-center">👥 Usuarios de Prueba</h3>
-                            <div className="space-y-2">
-                                <div className="bg-white/20 rounded-lg p-2">
-                                    <p className="font-semibold">Usuarios Independientes:</p>
-                                    <p className="text-xs">• 12.345.678-9 / matias123</p>
-                                    <p className="text-xs">• 98.765.432-1 / ana123</p>
-                                </div>
-                                <div className="bg-white/20 rounded-lg p-2">
-                                    <p className="font-semibold">Usuarios Dependientes:</p>
-                                    <p className="text-xs">• 23.456.789-0 / juan123</p>
-                                    <p className="text-xs">• 34.567.890-1 / maria123</p>
-                                </div>
-                            </div>
+                            <p className="text-blue-100">Administra la información de tus familiares a cargo</p>
                         </div>
                     </div>
+
+                    {/* Notification */}
+                    {notification.show && (
+                        <div className="fixed top-4 right-4 z-50 animate-slide-in">
+                            <div className={`rounded-xl shadow-lg p-4 flex items-center gap-3 ${
+                                notification.type === 'success' ? 'bg-green-50 border-2 border-green-200' : 'bg-red-50 border-2 border-red-200'
+                            }`}>
+                                <div className={notification.type === 'success' ? 'text-green-600' : 'text-red-600'}>
+                                    {notification.type === 'success' ? <CheckCircle /> : <AlertCircle />}
+                                </div>
+                                <p className={`font-medium ${notification.type === 'success' ? 'text-green-800' : 'text-red-800'}`}>
+                                    {notification.message}
+                                </p>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Main Content */}
+                    <div className="max-w-7xl mx-auto p-6">
+                        {/* Stats */}
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                            <div className="bg-white rounded-2xl shadow-lg p-6 border-l-4 border-blue-500">
+                                <div className="flex items-center justify-between">
+                                    <div>
+                                        <p className="text-gray-600 text-sm font-medium">Total Dependientes</p>
+                                        <p className="text-3xl font-bold text-gray-800 mt-2">{dependents.length}</p>
+                                    </div>
+                                    <div className="bg-blue-100 rounded-full p-4">
+                                        <Users size={32} className="text-blue-600" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="bg-white rounded-2xl shadow-lg p-6 border-l-4 border-purple-500">
+                                <div className="flex items-center justify-between">
+                                    <div>
+                                        <p className="text-gray-600 text-sm font-medium">Menores de Edad</p>
+                                        <p className="text-3xl font-bold text-gray-800 mt-2">
+                                            {dependents.filter(d => calculateAge(d.birthDate) < 18).length}
+                                        </p>
+                                    </div>
+                                    <div className="bg-purple-100 rounded-full p-4">
+                                        <User size={32} className="text-purple-600" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="bg-white rounded-2xl shadow-lg p-6 border-l-4 border-pink-500">
+                                <div className="flex items-center justify-between">
+                                    <div>
+                                        <p className="text-gray-600 text-sm font-medium">Adultos</p>
+                                        <p className="text-3xl font-bold text-gray-800 mt-2">
+                                            {dependents.filter(d => calculateAge(d.birthDate) >= 18).length}
+                                        </p>
+                                    </div>
+                                    <div className="bg-pink-100 rounded-full p-4">
+                                        <User size={32} className="text-pink-600" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Add Button */}
+                        <div className="mb-6">
+                            <button
+                                onClick={() => openModal()}
+                                className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-4 rounded-xl font-semibold shadow-lg hover:shadow-xl transition duration-300 transform hover:scale-105 flex items-center gap-2"
+                            >
+                                <Plus />
+                                Agregar Nuevo Dependiente
+                            </button>
+                        </div>
+
+                        {/* Dependents Grid */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            {dependents.map(dep => (
+                                <div key={dep.id} className="bg-white rounded-2xl shadow-lg hover:shadow-xl transition duration-300 overflow-hidden">
+                                    <div className="bg-gradient-to-r from-blue-500 to-purple-500 p-4 text-white">
+                                        <div className="flex items-center gap-3">
+                                            <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center text-2xl font-bold backdrop-blur-sm">
+                                                {dep.name.charAt(0)}
+                                            </div>
+                                            <div>
+                                                <h3 className="font-bold text-lg">{dep.name}</h3>
+                                                <p className="text-sm text-blue-100">{dep.relation}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div className="p-4 space-y-3">
+                                        <div className="flex items-center gap-2 text-gray-700">
+                                            <User size={16} />
+                                            <span className="text-sm"><strong>RUT:</strong> {dep.rut}</span>
+                                        </div>
+                                        
+                                        <div className="flex items-center gap-2 text-gray-700">
+                                            <Calendar size={16} />
+                                            <span className="text-sm">
+                                                <strong>Edad:</strong> {calculateAge(dep.birthDate)} años
+                                            </span>
+                                        </div>
+                                        
+                                        <div className="flex items-center gap-2 text-gray-700">
+                                            <span className="text-sm">
+                                                <strong>Sexo:</strong> {dep.sex === 'M' ? 'Masculino' : 'Femenino'}
+                                            </span>
+                                        </div>
+                                        
+                                        <div className="flex items-center gap-2 text-gray-700">
+                                            <span className="text-sm">
+                                                <strong>F. Nacimiento:</strong> {new Date(dep.birthDate).toLocaleDateString('es-CL')}
+                                            </span>
+                                        </div>
+
+                                        <div className="flex gap-2 pt-3 border-t">
+                                            <button
+                                                onClick={() => openModal(dep)}
+                                                className="flex-1 flex items-center justify-center gap-2 py-2 bg-blue-50 text-blue-600 rounded-lg font-medium hover:bg-blue-100 transition"
+                                            >
+                                                <Edit size={18} />
+                                                Editar
+                                            </button>
+                                            <button
+                                                onClick={() => handleDelete(dep.id)}
+                                                className="flex-1 flex items-center justify-center gap-2 py-2 bg-red-50 text-red-600 rounded-lg font-medium hover:bg-red-100 transition"
+                                            >
+                                                <Trash size={18} />
+                                                Eliminar
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+
+                        {dependents.length === 0 && (
+                            <div className="bg-white rounded-2xl shadow-lg p-12 text-center">
+                                <Users size={64} className="mx-auto text-gray-300 mb-4" />
+                                <h3 className="text-xl font-bold text-gray-800 mb-2">No hay dependientes registrados</h3>
+                                <p className="text-gray-600 mb-6">Comienza agregando tu primer dependiente</p>
+                                <button
+                                    onClick={() => openModal()}
+                                    className="bg-gradient-to-r from-blue-600 to-purple-600 text-white px-6 py-3 rounded-xl font-semibold shadow-lg hover:shadow-xl transition"
+                                >
+                                    Agregar Dependiente
+                                </button>
+                            </div>
+                        )}
+                    </div>
+
+                    {/* Modal */}
+                    {showModal && (
+                        <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50 backdrop-blur-sm">
+                            <div className="bg-white rounded-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                                <div className="sticky top-0 bg-gradient-to-r from-blue-600 to-purple-600 text-white p-6 rounded-t-3xl">
+                                    <div className="flex items-center justify-between">
+                                        <h2 className="text-2xl font-bold">
+                                            {editingDependent ? 'Editar Dependiente' : 'Agregar Nuevo Dependiente'}
+                                        </h2>
+                                        <button
+                                            onClick={closeModal}
+                                            className="p-2 hover:bg-white/20 rounded-lg transition"
+                                        >
+                                            <X />
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div className="p-6">
+                                    <div className="space-y-4">
+                                        <div>
+                                            <label className="block text-gray-700 font-medium mb-2">
+                                                Nombre Completo *
+                                            </label>
+                                            <input
+                                                type="text"
+                                                value={formData.name}
+                                                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                                                placeholder="Ej: Juan Pérez González"
+                                                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none transition"
+                                            />
+                                        </div>
+
+                                        <div>
+                                            <label className="block text-gray-700 font-medium mb-2">
+                                                RUT *
+                                            </label>
+                                            <input
+                                                type="text"
+                                                value={formData.rut}
+                                                onChange={handleRutChange}
+                                                placeholder="12.345.678-9"
+                                                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none transition"
+                                            />
+                                        </div>
+
+                                        <div>
+                                            <label className="block text-gray-700 font-medium mb-2">
+                                                Fecha de Nacimiento *
+                                            </label>
+                                            <input
+                                                type="date"
+                                                value={formData.birthDate}
+                                                onChange={(e) => setFormData({ ...formData, birthDate: e.target.value })}
+                                                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none transition"
+                                            />
+                                        </div>
+
+                                        <div>
+                                            <label className="block text-gray-700 font-medium mb-2">
+                                                Sexo *
+                                            </label>
+                                            <select
+                                                value={formData.sex}
+                                                onChange={(e) => setFormData({ ...formData, sex: e.target.value })}
+                                                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none transition"
+                                            >
+                                                <option value="M">Masculino</option>
+                                                <option value="F">Femenino</option>
+                                            </select>
+                                        </div>
+
+                                        <div>
+                                            <label className="block text-gray-700 font-medium mb-2">
+                                                Relación/Parentesco *
+                                            </label>
+                                            <select
+                                                value={formData.relation}
+                                                onChange={(e) => setFormData({ ...formData, relation: e.target.value })}
+                                                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:outline-none transition"
+                                            >
+                                                <option value="">Seleccionar...</option>
+                                                <option value="Hijo">Hijo/a</option>
+                                                <option value="Padre">Padre</option>
+                                                <option value="Madre">Madre</option>
+                                                <option value="Esposo">Esposo/a</option>
+                                                <option value="Hermano">Hermano/a</option>
+                                                <option value="Abuelo">Abuelo/a</option>
+                                                <option value="Otro">Otro</option>
+                                            </select>
+                                        </div>
+
+                                        <div className="flex gap-3 pt-4">
+                                            <button
+                                                onClick={handleSubmit}
+                                                className="flex-1 bg-gradient-to-r from-blue-600 to-purple-600 text-white py-4 rounded-xl font-semibold shadow-lg hover:shadow-xl transition duration-300"
+                                            >
+                                                {editingDependent ? 'Guardar Cambios' : 'Agregar Dependiente'}
+                                            </button>
+                                            <button
+                                                onClick={closeModal}
+                                                className="px-6 py-4 bg-gray-100 text-gray-700 rounded-xl font-semibold hover:bg-gray-200 transition"
+                                            >
+                                                Cancelar
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
                 </div>
             );
         };
 
         const root = ReactDOM.createRoot(document.getElementById('root'));
-        root.render(<LoginApp />);
+        root.render(<DependentsApp />);
     </script>
+
+    <style>
+        @keyframes slide-in {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        .animate-slide-in {
+            animation: slide-in 0.3s ease-out;
+        }
+    </style>
 </body>
 </html>
